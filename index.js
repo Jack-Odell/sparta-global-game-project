@@ -1,44 +1,72 @@
 $(document).ready(function () {
   var population = 1000;
-  var birthRate = 1;
-  var deathRate = 2;
+  var births = 1;
+  var birthRate;
+  var deaths;
+  var foodPopIncr = 1;
 
+  var = gameSpeed = 1000;
+
+  DeathRateCalc();
   DisplayStats();
+  EarthClick();
+  FoodButton();
+
+
   setInterval(function (){
     GameOver();
     Birth();
     Death();
-  }, 1000);
+  }, gameSpeed);
 
+  
+
+  function DeathRateCalc () {
+    deaths = population / 100 * 5 + 1;
+  }
 
   function DisplayStats() {
-    $(".population").html(population);
-    $(".birth-rate").html(birthRate);
-    $(".death-rate").html(deathRate);
+    $(".population").html(Math.floor(population));
+    $(".birth-rate").html(Math.floor(births));
+    $(".death-rate").html(Math.floor(deaths));
+    $("span.food-pop-incr").html(Math.floor(foodPopIncr));
   }
 
-  function Clicker() {
+  function Clicker () {
     population++;
-    DisplayStats();
+    Math.floorDisplayStats();
   }
 
-  function Birth() {
-    population += birthRate;
+  function Birth () {
+    population += births;
     DisplayStats()
   }
 
   function Death () {
-    population -= deathRate;
+    DeathRateCalc();
+    population -= deaths;
     DisplayStats;
   }
 
-  function GameOver() {
+  function GameOver () {
     if (population <= 0) {
       alert("Catastrophe! There's no humans left!");
     }
   }
 
-  $(".earth").click(function () {
-    Clicker();
-  });
+  function EarthClick () {
+    $(".earth").click(function (event) {
+      Clicker();
+    });
+  }
+
+  function FoodButton () {
+    $("button.food-pop-incr").click(function (event) {
+      births += foodPopIncr;
+      console.log("Plus Food");
+      DisplayStats();
+    });
+  }
+
+
 });
