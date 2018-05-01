@@ -22,6 +22,4 @@ Keep the Human Race from Extinction
 
 #### How to Buy Upgrades
 
-In order to upgrade these perks, you need to use currency. This currency is called **Collective Consciousness** or **CC** points.
-
-These can be earned by reaching milestone goals. Initially these goals will be met by clicking enough times.
+In order to upgrade these perks, you need to spend your current **Population**;

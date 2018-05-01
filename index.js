@@ -1,6 +1,6 @@
 $(document).ready(function () {
   var population = 2;
-  var maxPopulaton = 100;
+  var maxPopulaton = 1000000000;
   var births = 1;
   var birthRate;
   var deaths;
@@ -114,8 +114,8 @@ $(document).ready(function () {
   }
 
 //CC Points earned per click earth image
-  function Clicker (mod) {
-    ccPoints += mod;
+  function Clicker () {
+    foodTotal++;
     DisplayStats();
   }
 
