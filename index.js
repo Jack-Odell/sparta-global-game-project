@@ -1,5 +1,5 @@
 $(document).ready(function () {
-  var population = 100;
+  var population = 2;
   var maxPopulaton = 1000000000;
   var births = 1;
   var birthRate;
@@ -25,7 +25,8 @@ $(document).ready(function () {
 
   var techWorkerNum;
 
-  var gameSpeed = 1000;
+  var daySpeed = 1000;
+  var monthSpeed = 4000;
 
   var barWidth = 1;
   var progressPercent;
@@ -37,23 +38,25 @@ $(document).ready(function () {
   ScienceButton();
   GameManager();
 
-// Functions to repeat according to gameSpeed
+// Functions to repeat according to daySpeed
   function GameManager() {
+    setInterval(function () {
+      FoodFarm();
+    }, monthSpeed);
+
     setInterval(function (){
       DisplayStats();
       DeathRateCalc();
       GameOver();
       FoodCostCheck();
-      FoodFarm();
       TechCostCheck();
       ScienceCostCheck();
       FoodReq();
       TechWorker();
-      HumanWorker();
       Death();
       Birth();
       Progress();
-    }, gameSpeed);
+    }, daySpeed);
   }
 
 //This function displays all stats available on the page
@@ -79,10 +82,19 @@ $(document).ready(function () {
 
 //Calculation for the death rate. Death rate is a percentage of the population
   function DeathRateCalc () {
-    if (foodTotal < foodRequirement) {
-      deaths = (population / 100) * 10 + 1;
+    if (foodTotal < foodRequirement / 3) {
+      $(".food-req").css("color", "red");
+      deaths = (population / 100) * 60 + 1;
+    }
+    else if (foodTotal < foodRequirement / 2) {
+      $(".food-req").css("color", "orange");
+      deaths = (population / 100) * 20 + 1;
+    }
+    else if (foodTotal > foodRequirement) {
+      $(".food-req").css("color", "green");
+      deaths = (population / 100) * 20 + 1;
     } else {
-      deaths = (population / 100) + 1;
+      deaths = (population / 100) * 2 + 1;
     }
   }
 
@@ -121,10 +133,11 @@ $(document).ready(function () {
 
   function FoodReq() {
     foodRequirement = (population / 100) + 1;
+    return foodRequirement;
   }
 //A check to see if player has enough points to buy food
   function FoodCostCheck () {
-    if (ccPoints >= foodCost) {
+    if (population >= foodCost) {
       canBuyFood = true;
     } else {
       canBuyFood = false;
@@ -136,8 +149,8 @@ $(document).ready(function () {
       if (canBuyFood) {
         console.log("Plus Food");
         foodLevel++
-        ccPoints -= foodCost;
-        foodCost *= 1.5;
+        population -= foodCost;
+        foodCost *= 10;
         DisplayStats();
       }
     });
@@ -194,10 +207,6 @@ $(document).ready(function () {
     ccPoints += techTotal;
   }
 
-  function HumanWorker () {
-    ccPoints += population / 100000;
-  }
-
   function FoodWorker () {
     foodTotal += foodMod;
   }
@@ -214,8 +223,19 @@ $(document).ready(function () {
     }
   }
 
+  function MonthCounter() {
+    progressPercent = population / maxPopulaton * 100;
+    if (progressPercent < 100) {
+    $("#bar").width(progressPercent + "%");
+    }
+    else if (progressPercent > 100) {
+      progressPercent = 100;
+      $("#bar").width(progressPercent + "%");
+    }
+  }
+
   function GameOver () {
-    if (population < 2) {
+    if (population < 1) {
       console.log("Catastrophe! There are no humans left!");
     }
   }

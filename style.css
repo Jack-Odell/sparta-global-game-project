@@ -12,6 +12,18 @@
 
 }
 
+.stat-style {
+  padding: 3px;
+  border-bottom: 2px solid #fafafa;
+  border-left: 3px solid #726d82;
+  border-radius: 2px 0 0 10px;
+}
+
+p span {
+  font-weight: bold;
+  font-size: 1.2em;
+}
+
 .button-style {
   color: black;
 }
@@ -35,6 +47,14 @@
 
 .text-overlay {
   position: fixed;
+}
+
+.title-font {
+  font-family: 'Skranji', cursive;
+}
+
+.main-font {
+  font-family: 'Raleway', sans-serif;
 }
 
 /* IDs */
