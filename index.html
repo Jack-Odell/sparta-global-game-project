@@ -8,11 +8,10 @@
     <script type="text/javascript" src="index.js"></script>
     <title>Populate or Die</title>
   </head>
-  <body>
+  <body class="game-page-style">
     <div class="container">
       <div class="row">
         <div class="col-md-4">
-          <p>Populatation: <span class="population"></span></p>
           <p>Births: <span class="birth-rate"></span> p/sec</p>
           <p>Deaths: <span class="death-rate"></span> p/sec</p>
         </div>
@@ -30,9 +29,9 @@
           <img class="img-responsive earth" src="img/earth.png" alt="Picture of earth">
         </div>
       <div class="col-md-4">
-        <Button class="food-pop-incr" type="button" name="Food">Food +1</button><span> Cost: <span class="food-cost"></span> </span>
-        <Button class="science-incr" type="button" name="Food">Science +1</button><span> Cost: <span class="science-cost"></span> </span>
-        <Button class="tech-incr" type="button" name="Food">Tech +1</button><span> Cost: <span class="tech-cost"></span> </span>
+        <Button class="food-pop-incr button-style" type="button" name="Food">Food +1</button><span> Cost: <span class="food-cost"></span> </span>
+        <Button class="science-incr button-style" type="button" name="Food">Science +1</button><span> Cost: <span class="science-cost"></span> </span>
+        <Button class="tech-incr button-style" type="button" name="Food">Tech +1</button><span> Cost: <span class="tech-cost"></span> </span>
       </div>
       </div>
       <div class="row">
@@ -41,6 +40,15 @@
           <p>Science Lvl: <span class="science-stat"></span></p>
           <p>Technology Lvl: <span class="tech-stat"></span></p>
         </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+          <p class="text-center">Population</p>
+          <div id="progress-bar">
+            <span class="population"></span> / <span class="max-population"></span>
+            <div id="bar"></div>
+          </div>
         </div>
       </div>
     </div>
