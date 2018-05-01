@@ -1,6 +1,6 @@
 $(document).ready(function () {
   var population = 100;
-  var maxPopulaton = 10000000000;
+  var maxPopulaton = 1000000000;
   var births = 1;
   var birthRate;
   var deaths;
@@ -8,9 +8,10 @@ $(document).ready(function () {
   var ccPoints = 100;
 
   var foodRequirement = 0;
-  var foodTotal = 10;
+  var foodTotal = 1;
   var foodCost = 1;
-  var foodMod = 1;
+  var foodLevel = 1;
+
   var scienceTotal = 0;
   var scienceCost = 1;
   var scienceFoodMod = 1;
@@ -24,9 +25,10 @@ $(document).ready(function () {
 
   var techWorkerNum;
 
-  var gameSpeed = 100;
+  var gameSpeed = 1000;
 
-  var barWidth = 0;
+  var barWidth = 1;
+  var progressPercent;
 
   DisplayStats();
   EarthClick();
@@ -41,7 +43,8 @@ $(document).ready(function () {
       DisplayStats();
       DeathRateCalc();
       GameOver();
-      FoodCostCheck(scienceFoodMod);
+      FoodCostCheck();
+      FoodFarm();
       TechCostCheck();
       ScienceCostCheck();
       FoodReq();
@@ -59,14 +62,19 @@ $(document).ready(function () {
     $(".max-population").html(Math.floor(maxPopulaton));
     $(".birth-rate").html(Math.floor(births));
     $(".death-rate").html(Math.floor(deaths));
+
     $("span.food-cost").html(Math.floor(foodCost));
     $(".food-stat").html(Math.floor(foodTotal));
     $(".food-req").html(Math.floor(foodRequirement));
+    $(".food-lvl").html(Math.floor(foodLevel));
+
     $(".science-stat").html(Math.floor(scienceTotal));
-    $(".cc-points").html(Math.floor(ccPoints));
-    $(".tech-stat").html(Math.floor(techTotal));
-    $(".tech-cost").html(Math.floor(techCost));
     $(".science-cost").html(Math.floor(scienceCost));
+    $(".tech-cost").html(Math.floor(techCost));
+    $(".tech-stat").html(Math.floor(techTotal));
+
+    $(".cc-points").html(Math.floor(ccPoints));
+
   }
 
 //Calculation for the death rate. Death rate is a percentage of the population
@@ -78,6 +86,9 @@ $(document).ready(function () {
     }
   }
 
+  var birthChance = function () {
+    return Math.floor(Math.random() * Math.floor(4));
+  }
 
 //CC Points earned per click earth image
   function Clicker (mod) {
@@ -103,9 +114,10 @@ $(document).ready(function () {
     });
   }
 
-  // functon FoodFarm () {
-  //
-  // }
+  function FoodFarm () {
+    foodTotal += foodLevel;
+    births += foodTotal;
+  }
 
   function FoodReq() {
     foodRequirement = (population / 100) + 1;
@@ -122,12 +134,10 @@ $(document).ready(function () {
   function FoodButton () {
     $("button.food-pop-incr").click(function (event) {
       if (canBuyFood) {
-        births += foodTotal;
         console.log("Plus Food");
-        foodTotal++
-        foodTotal *= scienceFoodMod;
+        foodLevel++
         ccPoints -= foodCost;
-        foodCost = foodTotal;
+        foodCost *= 1.5;
         DisplayStats();
       }
     });
@@ -185,7 +195,7 @@ $(document).ready(function () {
   }
 
   function HumanWorker () {
-    ccPoints += population / 1000;
+    ccPoints += population / 100000;
   }
 
   function FoodWorker () {
@@ -194,11 +204,15 @@ $(document).ready(function () {
 
 //Progress Bar
   function Progress() {
-    if (barWidth < 100) {
-    $("#bar").width((population / maxPopulaton) + "%");;
-    console.log(barWidth)
+    progressPercent = population / maxPopulaton * 100;
+    if (progressPercent < 100) {
+    $("#bar").width(progressPercent + "%");
+    }
+    else if (progressPercent > 100) {
+      progressPercent = 100;
+      $("#bar").width(progressPercent + "%");
+    }
   }
-}
 
   function GameOver () {
     if (population < 2) {
