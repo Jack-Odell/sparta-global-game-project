@@ -1,6 +1,6 @@
 $(document).ready(function () {
   var population = 2;
-  var maxPopulaton = 1000000000;
+  var maxPopulaton = 1000;
   var births = 1;
   var birthRate;
   var deaths;
