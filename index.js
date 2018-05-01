@@ -1,6 +1,6 @@
 $(document).ready(function () {
   var population = 2;
-  var maxPopulaton = 1000;
+  var maxPopulaton = 100;
   var births = 1;
   var birthRate;
   var deaths;
@@ -26,10 +26,14 @@ $(document).ready(function () {
   var techWorkerNum;
 
   var daySpeed = 1000;
-  var monthSpeed = 4000;
+  var monthSpeed = 5000;
 
   var barWidth = 1;
   var progressPercent;
+
+  var monthPercent = 0;
+
+  var gamePlaying = true;
 
   DisplayStats();
   EarthClick();
@@ -37,27 +41,34 @@ $(document).ready(function () {
   TechButton();
   ScienceButton();
   GameManager();
+  Restart();
 
-// Functions to repeat according to daySpeed
+// Functions to repeat according to daySpeed and month
   function GameManager() {
-    setInterval(function () {
-      FoodFarm();
-    }, monthSpeed);
+    $(".win-screen").css("display", "none");
+    $(".lose-screen").css("display", "none");
+      setInterval(function () {
+        FoodFarm();
+      }, monthSpeed);
 
-    setInterval(function (){
-      DisplayStats();
-      DeathRateCalc();
-      GameOver();
-      FoodCostCheck();
-      TechCostCheck();
-      ScienceCostCheck();
-      FoodReq();
-      TechWorker();
-      Death();
-      Birth();
-      Progress();
-    }, daySpeed);
-  }
+      setInterval(function (){
+        if (gamePlaying) {
+          DisplayStats();
+          DeathRateCalc();
+          GameOver();
+          FoodCostCheck();
+          TechCostCheck();
+          ScienceCostCheck();
+          FoodReq();
+          Death();
+          Birth();
+          Progress();
+          MonthCounter();
+          WinGame();
+        } else {
+          population = maxPopulaton;
+        }}, daySpeed);
+      }
 
 //This function displays all stats available on the page
   function DisplayStats() {
@@ -158,9 +169,8 @@ $(document).ready(function () {
 
   function TechCostCheck () {
     techCost = (techTotal + 1) * 10.5;
-    techWorkerNum = techTotal;
 
-    if (ccPoints >= techCost) {
+    if (population >= techCost) {
       canBuyTech = true;
     } else {
       canBuyTech = false;
@@ -182,7 +192,7 @@ $(document).ready(function () {
   function ScienceCostCheck () {
     scienceCost = (scienceTotal + 1) * 21;
 
-    if (ccPoints >= scienceCost) {
+    if (population >= scienceCost) {
       canBuyScience = true;
     } else {
       canBuyScience = false;
@@ -194,21 +204,12 @@ $(document).ready(function () {
     if (canBuyScience) {
         console.log("Plus Science!");
         scienceTotal++;
-        ccPoints -= scienceCost;
+        population -= scienceCost;
         foodTotal *= 1.5;
         births += foodTotal;
         DisplayStats();
       }
     });
-  }
-
-//For every tech worker add 1 CC Point per second
-  function TechWorker() {
-    ccPoints += techTotal;
-  }
-
-  function FoodWorker () {
-    foodTotal += foodMod;
   }
 
 //Progress Bar
@@ -224,19 +225,35 @@ $(document).ready(function () {
   }
 
   function MonthCounter() {
-    progressPercent = population / maxPopulaton * 100;
-    if (progressPercent < 100) {
-    $("#bar").width(progressPercent + "%");
+    monthPercent += 25;
+    if (monthPercent <= 100) {
+    $("#month-bar").width(monthPercent + "%");
     }
-    else if (progressPercent > 100) {
-      progressPercent = 100;
-      $("#bar").width(progressPercent + "%");
+    else if (monthPercent > 100) {
+      monthPercent = 0;
+      $("#month-bar").width(monthPercent + "%");
     }
+  }
+
+  function Restart () {
+    $(".restart").click(function () {
+      location.reload();
+    });
   }
 
   function GameOver () {
     if (population < 1) {
-      console.log("Catastrophe! There are no humans left!");
+      $(".lose-screen").css("display", "block");
+      $(".main-game-window").css("display", "none");
+      gamePlaying = false;
+    }
+  }
+
+  function WinGame () {
+    if (population >= maxPopulaton) {
+      $(".win-screen").css("display", "block");
+      $(".main-game-window").css("display", "none");
+      gamePlaying = false;
     }
   }
 });

@@ -10,7 +10,7 @@
     <title>Populate or Die</title>
   </head>
   <body class="game-page-style main-font">
-    <div class="container">
+    <div class="container main-game-window">
       <div class="row">
         <div class="col-md-4">
         </div>
@@ -44,17 +44,21 @@
           <div class="row">
             <div class="col-md-6">
               <p class="stat-style">Food p/month: <br><span class="food-stat"></span></p>
+              <div class="row">
+                <div class="col-md-12">
+                  <div id="month-back-bar">
+                    <div id="month-bar"></div>
+                  </div>
+                </div>
+              </div>
             </div>
+
             <div class="col-md-6">
               <p class="stat-style">Food Requirement: <br><span class="food-req"></span></p>
             </div>
           </div>
-          <div class="month-bar"></div>
-
-        </div>
         </div>
       </div>
-
       <div class="row">
         <div class="col-md-6 col-md-offset-3">
           <p class="text-center">Population</p>
@@ -62,6 +66,27 @@
             <span class="population"></span> / <span class="max-population"></span>
             <div id="bar"></div>
           </div>
+        </div>
+      </div>
+    </div>
+    <div class="win-screen">
+      <div class="row">
+        <div class="col-md-12">
+          <p>After many a century, humans on Earth finally have enough smart people to do something cool, like colonise mars!</p>
+          <p>YOU WIN!</p>
+
+          <button class="button-style restart" type="button" name="button">Play again?</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="lose-screen">
+      <div class="row">
+        <div class="col-md-12">
+          <p>You tried your best, but in the end, no-one wanted to populate Earth...</p>
+          <p>YOU LOSE!</p>
+
+          <button class="button-style restart" type="button" name="button">Play again?</button>
         </div>
       </div>
     </div>
