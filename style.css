@@ -8,9 +8,13 @@
   text-align: center;
 }
 
+.margin-top {
+  margin-top: 2%
+}
+
 .earth {
   margin: 5%;
-  animation: rotation 480s linear infinite;
+  /* animation: rotation 480s linear infinite; */
   position: inherit;
   left: 0;
   bottom: 0;
@@ -68,7 +72,7 @@ p span {
 }
 
 .button-margin {
-  margin-top: 5%;
+  margin-top: 40%;
 
 }
 

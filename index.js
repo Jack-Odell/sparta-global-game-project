@@ -63,7 +63,6 @@ $(document).ready(function () {
           DisplayStats();
           DeathRateCalc();
           GameOver();
-          TechCostCheck();
           ScienceCostCheck();
           FoodReq();
           Birth();
@@ -118,7 +117,6 @@ $(document).ready(function () {
 //CC Points earned per click earth image
   function Clicker (mod) {
     foodTotal += mod;
-    // $(".earth")css("transform", scale(1.5, 1.5));
     DisplayStats();
   }
 
@@ -193,10 +191,11 @@ $(document).ready(function () {
 
   function TechButton () {
     $("button.tech-incr").click(function (event) {
+    TechCostCheck();
     if (canBuyTech) {
         techTotal++;
         population -= techCost;
-        techCCMod *= 1.5;
+        techCCMod *= 2.5;
         techCost *= 2.5;
         techLevel++;
         DisplayStats();
