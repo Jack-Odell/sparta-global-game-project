@@ -118,7 +118,7 @@ $(document).ready(function () {
 //CC Points earned per click earth image
   function Clicker (mod) {
     foodTotal += mod;
-    $(".earth")css("transform", scale(1.5, 1.5));
+    // $(".earth")css("transform", scale(1.5, 1.5));
     DisplayStats();
   }
 
