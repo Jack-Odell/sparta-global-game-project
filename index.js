@@ -11,12 +11,14 @@ $(document).ready(function () {
   var foodTotal = 1;
   var foodCost = 1;
   var foodLevel = 1;
+  var foodMod = 1;
 
   var scienceTotal = 0;
   var scienceCost = 1;
   var scienceFoodMod = 1;
   var techCCMod = 1;
   var techTotal = 0;
+  var techLevel = 1;
   var techCost = 1;
 
   var canBuyFood;
@@ -41,6 +43,7 @@ $(document).ready(function () {
   TechButton();
   ScienceButton();
   GameManager();
+  FoodFarm();
   Restart();
 
 // Functions to repeat according to daySpeed and month
@@ -56,7 +59,6 @@ $(document).ready(function () {
           DisplayStats();
           DeathRateCalc();
           GameOver();
-          FoodCostCheck();
           TechCostCheck();
           ScienceCostCheck();
           FoodReq();
@@ -86,6 +88,7 @@ $(document).ready(function () {
     $(".science-cost").html(Math.floor(scienceCost));
     $(".tech-cost").html(Math.floor(techCost));
     $(".tech-stat").html(Math.floor(techTotal));
+    $(".tech-lvl").html(Math.floor(techLevel));
 
     $(".cc-points").html(Math.floor(ccPoints));
 
@@ -114,8 +117,8 @@ $(document).ready(function () {
   }
 
 //CC Points earned per click earth image
-  function Clicker () {
-    foodTotal++;
+  function Clicker (mod) {
+    foodTotal += mod;
     DisplayStats();
   }
 
@@ -138,7 +141,8 @@ $(document).ready(function () {
   }
 
   function FoodFarm () {
-    foodTotal += foodLevel;
+
+    foodTotal += (foodLevel * foodLevel * foodLevel * foodLevel) * foodMod;
     births += foodTotal;
   }
 
@@ -157,18 +161,19 @@ $(document).ready(function () {
 
   function FoodButton () {
     $("button.food-pop-incr").click(function (event) {
+      FoodCostCheck();
       if (canBuyFood) {
-        console.log("Plus Food");
         foodLevel++
+        foodMod++;
         population -= foodCost;
-        foodCost *= 10;
+        foodCost *= 5;
         DisplayStats();
       }
     });
   }
 
   function TechCostCheck () {
-    techCost = (techTotal + 1) * 10.5;
+
 
     if (population >= techCost) {
       canBuyTech = true;
@@ -180,10 +185,11 @@ $(document).ready(function () {
   function TechButton () {
     $("button.tech-incr").click(function (event) {
     if (canBuyTech) {
-        console.log("Plus Tech");
         techTotal++;
-        ccPoints -= techCost;
-        techCCMod *= 1.25;
+        population -= techCost;
+        techCCMod *= 1.5;
+        techCost *= 2.5;
+        techLevel++;
         DisplayStats();
       }
     });
@@ -202,7 +208,6 @@ $(document).ready(function () {
   function ScienceButton () {
     $("button.science-incr").click(function (event) {
     if (canBuyScience) {
-        console.log("Plus Science!");
         scienceTotal++;
         population -= scienceCost;
         foodTotal *= 1.5;
