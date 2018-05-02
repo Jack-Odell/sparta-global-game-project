@@ -9,8 +9,31 @@
 }
 
 .earth {
-  padding: 5%;
+  margin: 5%;
+  animation: MoveUpDown 5s linear infinite, rotation 480s linear infinite;
+  position: inherit;
+  left: 0;
+  bottom: 0;
 }
+
+@keyframes MoveUpDown {
+  0%, 100% {
+    bottom: -5px;
+  }
+  50% {
+    bottom: 5px;
+  }
+}
+
+@-webkit-keyframes rotation {
+		from {
+				-webkit-transform: rotate(0deg);
+		}
+		to {
+				-webkit-transform: rotate(360deg);
+		}
+}
+
 
 .hide {
   display: none;

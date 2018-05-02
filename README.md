@@ -4,7 +4,7 @@ Keep the Human Race from Extinction
 
 ### Objective
 
-- Reach a Trillion in population
+- Reach a Billion in population
 - Don't let your population reach 0
 
 ### Design

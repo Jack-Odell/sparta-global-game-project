@@ -1,9 +1,8 @@
 $(document).ready(function () {
-  var population = 2;
-  var maxPopulaton = 1000000000;
+  var population = 100;
+  var maxPopulation = 1000000000;
   var births = 1;
-  var birthRate;
-  var deaths;
+  var deaths = 0;
   var foodPopIncr = 1;
   var ccPoints = 100;
 
@@ -37,17 +36,23 @@ $(document).ready(function () {
 
   var gamePlaying = true;
 
+//Bools for disaster events
+  var earthquake = false;
+  var plague = false;
+  var war = false;
+  var famine =false;
+
   DisplayStats();
   EarthClick();
   FoodButton();
   TechButton();
   ScienceButton();
   GameManager();
-  FoodFarm();
   Restart();
 
 // Functions to repeat according to daySpeed and month
   function GameManager() {
+    if (gamePlaying) {
     $(".win-screen").css("display", "none");
     $(".lose-screen").css("display", "none");
       setInterval(function () {
@@ -55,43 +60,41 @@ $(document).ready(function () {
       }, monthSpeed);
 
       setInterval(function (){
-        if (gamePlaying) {
           DisplayStats();
           DeathRateCalc();
           GameOver();
           TechCostCheck();
           ScienceCostCheck();
           FoodReq();
-          Death();
           Birth();
+          Death();
           Progress();
           MonthCounter();
           WinGame();
-        } else {
-          population = maxPopulaton;
-        }}, daySpeed);
+        }, daySpeed);
+    } else {
+      population = maxPopulation;
+    }
       }
 
 //This function displays all stats available on the page
   function DisplayStats() {
-    $(".population").html(Math.floor(population));
-    $(".max-population").html(Math.floor(maxPopulaton));
-    $(".birth-rate").html(Math.floor(births));
-    $(".death-rate").html(Math.floor(deaths));
-
-    $("span.food-cost").html(Math.floor(foodCost));
-    $(".food-stat").html(Math.floor(foodTotal));
-    $(".food-req").html(Math.floor(foodRequirement));
-    $(".food-lvl").html(Math.floor(foodLevel));
-
-    $(".science-stat").html(Math.floor(scienceTotal));
-    $(".science-cost").html(Math.floor(scienceCost));
-    $(".tech-cost").html(Math.floor(techCost));
-    $(".tech-stat").html(Math.floor(techTotal));
-    $(".tech-lvl").html(Math.floor(techLevel));
-
-    $(".cc-points").html(Math.floor(ccPoints));
-
+    function TheStat(theClass, theVar) {
+      $(theClass).html(Math.floor(theVar).toLocaleString());
+    }
+    TheStat(".population", population);
+    TheStat(".max-population", maxPopulation);
+    TheStat(".birth-rate", births);
+    TheStat(".death-rate", deaths);
+    TheStat(".food-cost", foodCost);
+    TheStat(".food-stat", foodTotal);
+    TheStat(".food-req", foodRequirement);
+    TheStat(".food-lvl", foodLevel);
+    TheStat(".science-stat", scienceTotal);
+    TheStat(".science-cost", scienceCost);
+    TheStat(".tech-cost", techCost);
+    TheStat(".tech-lvl", techLevel);
+    TheStat(".tech-stat", techTotal);
   }
 
 //Calculation for the death rate. Death rate is a percentage of the population
@@ -102,31 +105,38 @@ $(document).ready(function () {
     }
     else if (foodTotal < foodRequirement / 2) {
       $(".food-req").css("color", "orange");
-      deaths = (population / 100) * 20 + 1;
+      deaths = (population / 100) * 50 + 1;
     }
     else if (foodTotal > foodRequirement) {
       $(".food-req").css("color", "green");
-      deaths = (population / 100) * 20 + 1;
+      deaths = (population / 100) * 30 + 1;
     } else {
-      deaths = (population / 100) * 2 + 1;
+      deaths = (population / 100) * 40 + 1;
     }
-  }
-
-  var birthChance = function () {
-    return Math.floor(Math.random() * Math.floor(4));
   }
 
 //CC Points earned per click earth image
   function Clicker (mod) {
     foodTotal += mod;
+    $(".earth")css("transform", scale(1.5, 1.5));
     DisplayStats();
   }
 
 //Amount for Birth Rate
   function Birth () {
+    var popIncr = births - deaths;
     population += births;
-    DisplayStats()
+    PlusIndicator(popIncr);
+    DisplayStats();
   }
+
+  function PlusIndicator (theVar) {
+    if (document.hasFocus()) {
+      if (theVar > 0) {
+        $(".pop-plus-indicator").html("+" + (Math.floor(theVar).toLocaleString())).slideToggle(50).fadeOut(600);
+    }
+  }
+}
 
 //Amount for Death Rate
   function Death () {
@@ -141,7 +151,6 @@ $(document).ready(function () {
   }
 
   function FoodFarm () {
-
     foodTotal += (foodLevel * foodLevel * foodLevel * foodLevel) * foodMod;
     births += foodTotal;
   }
@@ -219,7 +228,7 @@ $(document).ready(function () {
 
 //Progress Bar
   function Progress() {
-    progressPercent = population / maxPopulaton * 100;
+    progressPercent = population / maxPopulation * 100;
     if (progressPercent < 100) {
     $("#bar").width(progressPercent + "%");
     }
@@ -240,6 +249,10 @@ $(document).ready(function () {
     }
   }
 
+  function DisasterEvent () {
+
+  }
+
   function Restart () {
     $(".restart").click(function () {
       location.reload();
@@ -255,7 +268,7 @@ $(document).ready(function () {
   }
 
   function WinGame () {
-    if (population >= maxPopulaton) {
+    if (population >= maxPopulation) {
       $(".win-screen").css("display", "block");
       $(".main-game-window").css("display", "none");
       gamePlaying = false;
