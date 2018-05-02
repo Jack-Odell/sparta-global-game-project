@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Raleway|Skranji|Share+Tech+Mono" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="index.js"></script>
+    <title>Populate or Die</title>
+  </head>
+  <body class="game-page-style main-font">
+    <div class="container main-game-window">
+      <div class="row">
+        <div class="col-md-4">
+        </div>
+
+        <div class="col-md-4">
+          <h1 class="text-center title-font">Populate or Die</h1>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-2">
+          <p class="stat-style">Births p/day: <span class="birth-rate"></span></p>
+          <p class="stat-style">Deaths p/day: <span class="death-rate"></span></p>
+        </div>
+        <div class="col-md-4 col-md-offset-2">
+          <img class="img-responsive earth" src="img/earth.png" alt="Picture of earth">
+        </div>
+
+        <div class="col-md-4">
+          <div class="">
+            <Button class="food-pop-incr button-style" type="button" name="">Food Lvl: <span class="food-lvl"></span> </button><span> Cost: <span class="food-cost"></span> </span>
+          </div>
+          <div class="hide">
+            <Button class="science-incr button-style" type="button" name="">Science Lvl: </button><span> Cost: <span class="science-cost"></span> </span>
+          </div>
+          <div class="">
+            <Button class="tech-incr button-style" type="button" name="">Tech Lvl: <span class="tech-lvl"></span> </button><span> Cost: <span class="tech-cost"></span> </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-4">
+          <div class="row">
+            <div class="col-md-6">
+              <p class="stat-style">Food p/month: <br><span class="food-stat"></span></p>
+              <div class="row">
+                <div class="col-md-12">
+                  <div id="month-back-bar">
+                    <div id="month-bar"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <p class="stat-style">Food Requirement: <br><span class="food-req"></span></p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+          <p class="text-center">Population</p>
+          <div id="progress-bar">
+            <span class="population"></span> / <span class="max-population"></span>
+            <div id="bar"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="win-screen">
+      <div class="row">
+        <div class="col-md-12">
+          <p>After many a century, humans on Earth finally have enough smart people to do something cool, like colonise mars!</p>
+          <p>YOU WIN!</p>
+
+          <button class="button-style restart" type="button" name="button">Play again?</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="lose-screen">
+      <div class="row">
+        <div class="col-md-12">
+          <p>You tried your best, but in the end, no-one wanted to populate Earth...</p>
+          <p>YOU LOSE!</p>
+
+          <button class="button-style restart" type="button" name="button">Play again?</button>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
