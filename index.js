@@ -10,7 +10,7 @@ $(document).ready(function () {
   var foodCost = 100;
   var foodLevel = 1;
   var foodMod = 1;
-  var clickIncr = 1;
+  var clickIncr = 10;
 
   var workerLevel = 0;
   var workerCost = 1000;
@@ -66,6 +66,7 @@ $(document).ready(function () {
 
   function GameManager() {
     if (gamePlaying) {
+    $(".music").trigger("play").prop("volume", 0.1);
     $(".main-game-window").toggle();
     $(".win-screen").css("display", "none");
     $(".lose-screen").css("display", "none");
@@ -117,15 +118,15 @@ $(document).ready(function () {
   function DeathRateCalc () {
     if (foodTotal < foodRequirement / 3) {
       $(".food-req").css("color", "red");
-      deaths = (population / 100) * 60 + 1;
+      deaths = (population / 100) * 50 + 1;
     }
     else if (foodTotal < foodRequirement / 2) {
       $(".food-req").css("color", "orange");
-      deaths = (population / 100) * 50 + 1;
+      deaths = (population / 100) * 40 + 1;
     }
     else if (foodTotal > foodRequirement) {
       $(".food-req").css("color", "green");
-      deaths = (population / 100) * 10 + 1;
+      deaths = (population / 100) * 5 + 1;
     }
   }
 
@@ -135,6 +136,9 @@ $(document).ready(function () {
     population += births;
     PlusIndicator(".pop-plus-indicator", popIncr);
     DisplayStats();
+    if (popIncr > 0) {
+      $(".get-pop").trigger("play");
+    }
   }
 
 //Takes a number variable and shows it the given class
@@ -177,6 +181,7 @@ $(document).ready(function () {
     $("button.food-pop-incr").click(function (event) {
       FoodCostCheck();
       if (canBuyFood) {
+        $(".get-select").trigger("play");
         foodLevel++
         foodMod++;
         population -= foodCost;
@@ -185,7 +190,7 @@ $(document).ready(function () {
       }
     });
   }
-  
+
   function TechCostCheck () {
     if (population >= techCost) {
       canBuyTech = true;
@@ -199,12 +204,13 @@ $(document).ready(function () {
     $("button.tech-incr").click(function (event) {
     TechCostCheck();
     if (canBuyTech) {
-        clickIncr += techCCMod + (foodTotal / 100 * 10);
-        population -= techCost;
-        techCCMod *= 2.5;
-        techCost *= 3.5;
-        techLevel++;
-        DisplayStats();
+      $(".get-select").trigger("play");
+      techCCMod *= 1.5;
+      clickIncr *= techCCMod;
+      population -= techCost;
+      techCost *= 3.5;
+      techLevel++;
+      DisplayStats();
       }
     });
   }
@@ -221,11 +227,12 @@ $(document).ready(function () {
     $("button.worker-incr").click(function (event) {
       WorkerCostCheck();
     if (canBuyWorker) {
-        workerLevel++;
-        clickWorker++;
-        population -= workerCost;
-        workerCost = workerCost * 5;
-        DisplayStats();
+      $(".get-select").trigger("play");
+      workerLevel++;
+      clickWorker++;
+      population -= workerCost;
+      workerCost = workerCost * 5;
+      DisplayStats();
       }
     });
   }
@@ -233,7 +240,7 @@ $(document).ready(function () {
   function ClickWorker () {
     if (workerLevel > 0) {
       var workIncr = clickIncr * workerLevel;
-      population += workerIncr;
+      population += workIncr;
       PlusIndicator(".worker-indicator", workIncr);
     }
   }
@@ -267,10 +274,6 @@ $(document).ready(function () {
       monthPercent = 0;
       $("#month-bar").width(monthPercent + "%");
     }
-  }
-
-  function DisasterEvent () {
-
   }
 
   function Restart () {
