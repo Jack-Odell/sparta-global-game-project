@@ -34,12 +34,6 @@ $(document).ready(function () {
 
   var gamePlaying = false;
 
-// //Bools for disaster events
-//   var earthquake = false;
-//   var plague = false;
-//   var war = false;
-//   var famine =false;
-
   StartGame();
   GameManager();
   DisplayStats();
@@ -63,6 +57,7 @@ $(document).ready(function () {
       console.log(gamePlaying);
     });
   }
+
 
   function GameManager() {
     if (gamePlaying) {
