@@ -20,6 +20,18 @@
   bottom: 0;
 }
 
+.make-absolute {
+  position: absolute;
+}
+
+.earth:active {
+  transform: scale(0.99);
+}
+
+.earth:hover {
+  cursor: pointer;
+}
+
 @keyframes MoveUpDown {
   0%, 100% {
     bottom: -5px;
@@ -67,6 +79,12 @@ p span {
 .button-style {
   color: black;
   border-radius: 18px;
+  text-align: center;
+  padding: 5%;
+  outline: none;
+}
+
+.ind-style {
   text-align: center;
   padding: 5%;
 }

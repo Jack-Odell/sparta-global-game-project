@@ -11,6 +11,7 @@ $(document).ready(function () {
   var foodCost = 1;
   var foodLevel = 1;
   var foodMod = 1;
+  var clickIncr = 1;
 
   var scienceTotal = 0;
   var scienceCost = 1;
@@ -43,7 +44,7 @@ $(document).ready(function () {
   var famine =false;
 
   DisplayStats();
-  EarthClick();
+  EarthClick(techCCMod);
   FoodButton();
   TechButton();
   ScienceButton();
@@ -74,7 +75,7 @@ $(document).ready(function () {
     } else {
       population = maxPopulation;
     }
-      }
+  }
 
 //This function displays all stats available on the page
   function DisplayStats() {
@@ -115,37 +116,33 @@ $(document).ready(function () {
   }
 
 //CC Points earned per click earth image
-  function Clicker (mod) {
-    foodTotal += mod;
-    DisplayStats();
+  function EarthClick (mod) {
+    $(".earth").click(function (event) {
+      PlusIndicator(".earth-indicator", clickIncr);
+      population += clickIncr;
+      DisplayStats();
+    });
+    clickIncr += mod + (foodTotal / 100 * 10);
   }
 
 //Amount for Birth Rate
   function Birth () {
     var popIncr = births - deaths;
     population += births;
-    PlusIndicator(popIncr);
+    PlusIndicator(".pop-plus-indicator", popIncr);
     DisplayStats();
   }
 
-  function PlusIndicator (theVar) {
-    if (document.hasFocus()) {
+  function PlusIndicator (theClass, theVar) {
       if (theVar > 0) {
-        $(".pop-plus-indicator").html("+" + (Math.floor(theVar).toLocaleString())).slideToggle(50).fadeOut(600);
+        $(theClass).html("+" + (Math.floor(theVar).toLocaleString())).stop(true, true).slideToggle(50).fadeOut(600);
     }
   }
-}
 
 //Amount for Death Rate
   function Death () {
     population -= deaths;
     DisplayStats();
-  }
-
-  function EarthClick () {
-    $(".earth").click(function (event) {
-      Clicker(techCCMod);
-    });
   }
 
   function FoodFarm () {
@@ -157,6 +154,7 @@ $(document).ready(function () {
     foodRequirement = (population / 100) + 1;
     return foodRequirement;
   }
+
 //A check to see if player has enough points to buy food
   function FoodCostCheck () {
     if (population >= foodCost) {
@@ -180,8 +178,6 @@ $(document).ready(function () {
   }
 
   function TechCostCheck () {
-
-
     if (population >= techCost) {
       canBuyTech = true;
     } else {
