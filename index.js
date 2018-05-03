@@ -4,58 +4,72 @@ $(document).ready(function () {
   var births = 1;
   var deaths = 0;
   var foodPopIncr = 1;
-  var ccPoints = 100;
 
   var foodRequirement = 0;
   var foodTotal = 1;
-  var foodCost = 1;
+  var foodCost = 100;
   var foodLevel = 1;
   var foodMod = 1;
   var clickIncr = 1;
 
-  var scienceTotal = 0;
-  var scienceCost = 1;
-  var scienceFoodMod = 1;
+  var workerLevel = 0;
+  var workerCost = 1000;
+  var workerIncr = 1;
+  var clickWorker = 0;
+
   var techCCMod = 1;
   var techTotal = 0;
   var techLevel = 1;
-  var techCost = 1;
+  var techCost = 100;
 
   var canBuyFood;
   var canBuyTech;
-  var CanBuyScience;
-
-  var techWorkerNum;
+  var CanBuyWorker;
 
   var daySpeed = 1000;
   var monthSpeed = 5000;
 
-  var barWidth = 1;
   var progressPercent;
-
   var monthPercent = 0;
 
-  var gamePlaying = true;
+  var gamePlaying = false;
 
-//Bools for disaster events
-  var earthquake = false;
-  var plague = false;
-  var war = false;
-  var famine =false;
+// //Bools for disaster events
+//   var earthquake = false;
+//   var plague = false;
+//   var war = false;
+//   var famine =false;
 
+  StartGame();
+  GameManager();
   DisplayStats();
   EarthClick(techCCMod);
   FoodButton();
   TechButton();
-  ScienceButton();
-  GameManager();
+  WorkerButton();
   Restart();
 
 // Functions to repeat according to daySpeed and month
-  function GameManager() {
-    if (gamePlaying) {
+  function StartGame () {
+    $(".start-game").css("display", "absolute")
+    $(".main-game-window").toggle();
     $(".win-screen").css("display", "none");
     $(".lose-screen").css("display", "none");
+
+    $(".start-button").click(function (event) {
+      gamePlaying = true;
+      $(".main-game-window").css("display", "relative");
+      GameManager();
+      console.log(gamePlaying);
+    });
+  }
+
+  function GameManager() {
+    if (gamePlaying) {
+    $(".main-game-window").toggle();
+    $(".win-screen").css("display", "none");
+    $(".lose-screen").css("display", "none");
+    $(".start-game").css("display", "none")
       setInterval(function () {
         FoodFarm();
       }, monthSpeed);
@@ -64,16 +78,17 @@ $(document).ready(function () {
           DisplayStats();
           DeathRateCalc();
           GameOver();
-          ScienceCostCheck();
           FoodReq();
+          ClickWorker();
           Birth();
           Death();
           Progress();
           MonthCounter();
           WinGame();
         }, daySpeed);
-    } else {
+    } else if (population === maxPopulation){
       population = maxPopulation;
+      gamePlaying = false;
     }
   }
 
@@ -82,6 +97,7 @@ $(document).ready(function () {
     function TheStat(theClass, theVar) {
       $(theClass).html(Math.floor(theVar).toLocaleString());
     }
+
     TheStat(".population", population);
     TheStat(".max-population", maxPopulation);
     TheStat(".birth-rate", births);
@@ -90,8 +106,8 @@ $(document).ready(function () {
     TheStat(".food-stat", foodTotal);
     TheStat(".food-req", foodRequirement);
     TheStat(".food-lvl", foodLevel);
-    TheStat(".science-stat", scienceTotal);
-    TheStat(".science-cost", scienceCost);
+    TheStat(".worker-stat", workerLevel);
+    TheStat(".worker-cost", workerCost);
     TheStat(".tech-cost", techCost);
     TheStat(".tech-lvl", techLevel);
     TheStat(".tech-stat", techTotal);
@@ -109,20 +125,8 @@ $(document).ready(function () {
     }
     else if (foodTotal > foodRequirement) {
       $(".food-req").css("color", "green");
-      deaths = (population / 100) * 30 + 1;
-    } else {
-      deaths = (population / 100) * 40 + 1;
+      deaths = (population / 100) * 10 + 1;
     }
-  }
-
-//CC Points earned per click earth image
-  function EarthClick (mod) {
-    $(".earth").click(function (event) {
-      PlusIndicator(".earth-indicator", clickIncr);
-      population += clickIncr;
-      DisplayStats();
-    });
-    clickIncr += mod + (foodTotal / 100 * 10);
   }
 
 //Amount for Birth Rate
@@ -133,6 +137,7 @@ $(document).ready(function () {
     DisplayStats();
   }
 
+//Takes a number variable and shows it the given class
   function PlusIndicator (theClass, theVar) {
       if (theVar > 0) {
         $(theClass).html("+" + (Math.floor(theVar).toLocaleString())).stop(true, true).slideToggle(50).fadeOut(600);
@@ -145,11 +150,13 @@ $(document).ready(function () {
     DisplayStats();
   }
 
+//Adds a mulitplication of food total to birth rate
   function FoodFarm () {
     foodTotal += (foodLevel * foodLevel * foodLevel * foodLevel) * foodMod;
     births += foodTotal;
   }
 
+//The threshold before birth rate is increased
   function FoodReq() {
     foodRequirement = (population / 100) + 1;
     return foodRequirement;
@@ -158,12 +165,14 @@ $(document).ready(function () {
 //A check to see if player has enough points to buy food
   function FoodCostCheck () {
     if (population >= foodCost) {
+      $("button.food-pop-incr").css("box-shadow", "0 0px 40px rgba(145, 92, 182, .4)")
       canBuyFood = true;
     } else {
       canBuyFood = false;
     }
   }
 
+//Button to upgrade monthly food output
   function FoodButton () {
     $("button.food-pop-incr").click(function (event) {
       FoodCostCheck();
@@ -171,12 +180,12 @@ $(document).ready(function () {
         foodLevel++
         foodMod++;
         population -= foodCost;
-        foodCost *= 5;
+        foodCost *= 3.5;
         DisplayStats();
       }
     });
   }
-
+  
   function TechCostCheck () {
     if (population >= techCost) {
       canBuyTech = true;
@@ -185,39 +194,55 @@ $(document).ready(function () {
     }
   }
 
+  //Button to upgrade clicker value
   function TechButton () {
     $("button.tech-incr").click(function (event) {
     TechCostCheck();
     if (canBuyTech) {
-        techTotal++;
+        clickIncr += techCCMod + (foodTotal / 100 * 10);
         population -= techCost;
         techCCMod *= 2.5;
-        techCost *= 2.5;
+        techCost *= 3.5;
         techLevel++;
         DisplayStats();
       }
     });
   }
 
-  function ScienceCostCheck () {
-    scienceCost = (scienceTotal + 1) * 21;
-
-    if (population >= scienceCost) {
-      canBuyScience = true;
+  function WorkerCostCheck () {
+    if (population >= workerCost) {
+      canBuyWorker = true;
     } else {
-      canBuyScience = false;
+      canBuyWorker = false;
     }
   }
 
-  function ScienceButton () {
-    $("button.science-incr").click(function (event) {
-    if (canBuyScience) {
-        scienceTotal++;
-        population -= scienceCost;
-        foodTotal *= 1.5;
-        births += foodTotal;
+  function WorkerButton () {
+    $("button.worker-incr").click(function (event) {
+      WorkerCostCheck();
+    if (canBuyWorker) {
+        workerLevel++;
+        clickWorker++;
+        population -= workerCost;
+        workerCost = workerCost * 5;
         DisplayStats();
       }
+    });
+  }
+
+  function ClickWorker () {
+    if (workerLevel > 0) {
+      var workIncr = clickIncr * workerLevel;
+      population += workerIncr;
+      PlusIndicator(".worker-indicator", workIncr);
+    }
+  }
+
+  function EarthClick () {
+    $(".earth").click(function (event) {
+      PlusIndicator(".earth-indicator", clickIncr);
+      population += clickIncr;
+      DisplayStats();
     });
   }
 
